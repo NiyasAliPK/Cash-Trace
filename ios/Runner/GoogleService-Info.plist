@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>465285615890-6n5f0trrpv7eheuj9a58f1m924d5b7vp.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.465285615890-6n5f0trrpv7eheuj9a58f1m924d5b7vp</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>465285615890-tji2fqa4pdefm68ak0crudt8up4cjfab.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyA-FPYcxFFhvWK3pkZohoKj65tG4M03B_k</string>
+	<key>GCM_SENDER_ID</key>
+	<string>465285615890</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.cashTrace</string>
+	<key>PROJECT_ID</key>
+	<string>cash-trace</string>
+	<key>STORAGE_BUCKET</key>
+	<string>cash-trace.firebasestorage.app</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:465285615890:ios:e959ba9936bb79b734e3cb</string>
+</dict>
+</plist>

@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "465285615890",
+    "project_id": "cash-trace",
+    "storage_bucket": "cash-trace.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:465285615890:android:4acfea22128e440634e3cb",
+        "android_client_info": {
+          "package_name": "com.example.cash_trace"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "465285615890-tji2fqa4pdefm68ak0crudt8up4cjfab.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.cash_trace",
+            "certificate_hash": "56755d66f54e41294a820238310e41cc87ad706d"
+          }
+        },
+        {
+          "client_id": "465285615890-7m00757tarm6bo1j09euloer0ajeakkk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAmBFKscRAHHEviBXWbOvT_nk3yzqbFO7A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "465285615890-7m00757tarm6bo1j09euloer0ajeakkk.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "465285615890-6n5f0trrpv7eheuj9a58f1m924d5b7vp.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.cashTrace"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
