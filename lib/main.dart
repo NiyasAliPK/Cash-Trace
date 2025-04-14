@@ -5,17 +5,20 @@ import 'package:cash_trace/app/theme/theme_controller.dart';
 import 'package:cash_trace/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  SystemChrome.setPreferredOrientations(
-      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+
+  try {
+    await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
+  } catch (e) {
+    print('Error initializing Firebase: $e');
+  }
+
   runApp(const ProviderScope(child: MyApp()));
 }
 
@@ -35,37 +38,40 @@ class MyApp extends ConsumerWidget {
       theme: ThemeData(
         colorScheme: ColorScheme(
           brightness: Brightness.light,
-          primary: Color(0xFF1E88E5), // Blue - Branding color
+          primary: const Color(0xFF424242), // Medium-Dark Grey Primary
           onPrimary: Colors.white,
-          secondary: Color(0xFF43A047), // Green - Secondary actions
-          onSecondary: Colors.white, // Dark text
-          surface: Colors.white, // Cards, sheets
-          onSurface: Color(0xFF212121),
-          error: Color(0xFFD32F2F),
+          secondary: const Color(0xFF757575), // Medium Grey Secondary
+          onSecondary: Colors.white, // Dark Grey Text
+          surface: Colors.white, // Very Light Grey Surface
+          onSurface: const Color(0xFF212121), // Dark Grey Text on Surface
+          error: const Color(0xFFB00020),
           onError: Colors.white,
-          tertiary: Color(0xFFBDBDBD), // Subtle dividers, borders
-          outline: Color(0xFFEEEEEE),
+          tertiary: const Color(0xFFBDBDBD), // Light-Medium Grey Tertiary
+          outline: const Color(0xFF9E9E9E), // Medium Grey Outline
         ),
-        scaffoldBackgroundColor: const Color.fromARGB(
-            255, 250, 250, 250), // Light mode scaffold background
+        scaffoldBackgroundColor: Color.fromARGB(
+            255, 247, 247, 247), // Light mode scaffold background
       ),
       darkTheme: ThemeData(
         colorScheme: ColorScheme(
           brightness: Brightness.dark,
-          primary: Color(0xFF90CAF9), // Light blue - Branding
+          primary: const Color(
+              0xFFBDBDBD), // Light-Medium Grey Primary for Dark Mode
           onPrimary: Colors.black,
-          secondary: Color(0xFFA5D6A7), // Muted green - accents
-          onSecondary: Colors.black, // Text
-          surface: Color(0xFF1E1E1E), // Cards, modals
-          onSurface: Colors.white,
-          error: Color(0xFFEF9A9A),
+          secondary:
+              const Color(0xFF9E9E9E), // Medium Grey Secondary for Dark Mode
+          onSecondary: Colors.black, // Very Light Grey Text
+          surface: Colors.black, // Dark Grey Surface
+          onSurface: const Color(0xFFEEEEEE), // Very Light Grey Text on Surface
+          error: const Color(0xFFCF6679),
           onError: Colors.black,
-          tertiary: Color(0xFF616161), // Dividers, subtle UIs
-          outline: Color(0xFF2E2E2E),
+          tertiary: const Color(
+              0xFF616161), // Medium-Dark Grey Tertiary for Dark Mode
+          outline: const Color(0xFF757575), // Medium Grey Outline for Dark Mode
         ),
         useMaterial3: true,
-        scaffoldBackgroundColor:
-            Colors.grey[900], // Dark mode scaffold background
+        scaffoldBackgroundColor: const Color.fromARGB(
+            255, 30, 30, 30), // Dark mode scaffold background
       ),
     );
   }

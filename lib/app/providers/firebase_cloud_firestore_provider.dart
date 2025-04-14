@@ -21,9 +21,20 @@ Stream<List<TransactionModel>> transactions(ref) {
 
 // Provider to get transactions by type (income/expense)
 @riverpod
-Stream<List<TransactionModel>> transactionsByType(ref, String type) {
-  final repository = ref.watch(transactionRepositoryProvider);
-  return repository.getTransactionsByType(type);
+Stream<List<TransactionModel>> transactionsWithFilter(
+  ref, {
+  String? type,
+  List<String>? categories,
+  DateTime? startDate,
+  DateTime? endDate,
+}) {
+  final repository =
+      ref.watch(transactionRepositoryProvider) as TransactionRepository;
+  return repository.getFilteredTransactions(
+      type: type,
+      endDate: endDate,
+      startDate: startDate,
+      categories: categories);
 }
 
 // Provider to get transactions by category
@@ -42,14 +53,14 @@ Stream<List<TransactionModel>> transactionsByDateRange(
 }
 
 // Provider for total income
-@riverpod
+@Riverpod(keepAlive: true)
 Future<double> totalIncome(ref) {
   final repository = ref.watch(transactionRepositoryProvider);
   return repository.getTotalIncome();
 }
 
 // Provider for total expenses
-@riverpod
+@Riverpod(keepAlive: true)
 Future<double> totalExpenses(ref) {
   final repository = ref.watch(transactionRepositoryProvider);
   return repository.getTotalExpenses();
@@ -73,7 +84,7 @@ class TransactionNotifier extends _$TransactionNotifier {
 
       // Invalidate the transactions providers to refresh the UI
       ref.invalidate(transactionsProvider);
-      ref.invalidate(transactionsByTypeProvider);
+      ref.invalidate(transactionsWithFilterProvider);
       ref.invalidate(totalIncomeProvider);
       ref.invalidate(totalExpensesProvider);
       state = TransactionStates.success;
@@ -96,7 +107,7 @@ class TransactionNotifier extends _$TransactionNotifier {
 
       // Invalidate providers
       ref.invalidate(transactionsProvider);
-      ref.invalidate(transactionsByTypeProvider);
+      ref.invalidate(transactionsWithFilterProvider);
       ref.invalidate(totalIncomeProvider);
       ref.invalidate(totalExpensesProvider);
       state = TransactionStates.success;
@@ -117,7 +128,7 @@ class TransactionNotifier extends _$TransactionNotifier {
 
       // Invalidate providers
       ref.invalidate(transactionsProvider);
-      ref.invalidate(transactionsByTypeProvider);
+      ref.invalidate(transactionsWithFilterProvider);
       ref.invalidate(totalIncomeProvider);
       ref.invalidate(totalExpensesProvider);
       state = TransactionStates.success;

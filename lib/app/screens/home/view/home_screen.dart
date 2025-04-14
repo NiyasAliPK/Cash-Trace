@@ -12,7 +12,8 @@ class HomeScreen extends ConsumerWidget {
   Widget build(BuildContext context, ref) {
     // final allTransactions = ref.watch(transactionsProvider);
     return Scaffold(
-      body: SafeArea(
+      body: Padding(
+        padding: EdgeInsets.all(SizeConstant.getHeightWithScreen(12)),
         child: Column(
           children: [
             Expanded(

@@ -36,7 +36,6 @@ class CommonAppbar extends ConsumerWidget implements PreferredSizeWidget {
                 children: [
                   Icon(actualIsDark ? Icons.dark_mode : Icons.light_mode),
                   Switch.adaptive(
-                    inactiveTrackColor: Colors.blueGrey,
                     value: actualIsDark,
                     onChanged: (value) {
                       ref.read(themeModeProvider.notifier).toggleThemeMode();

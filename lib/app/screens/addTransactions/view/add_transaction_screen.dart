@@ -9,19 +9,29 @@ import 'package:cash_trace/app/screens/addTransactions/widgets/income_expense_ra
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class AddTransactionScreen extends ConsumerWidget {
-  AddTransactionScreen({super.key});
+class AddTransactionScreen extends ConsumerStatefulWidget {
+  const AddTransactionScreen({super.key});
 
+  @override
+  ConsumerState<AddTransactionScreen> createState() =>
+      _AddTransactionScreenState();
+}
+
+class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
   final TextEditingController descController = TextEditingController();
+
   final TextEditingController amountController = TextEditingController();
 
   String selectedCategory = '';
+
   DateTime selectedDate = DateTime.now();
+
   String seletedTransactionType = 'Income';
 
   @override
-  Widget build(BuildContext context, ref) {
+  Widget build(BuildContext context) {
     ref.listen<TransactionStates>(
       transactionNotifierProvider,
       (previous, next) {
@@ -56,7 +66,7 @@ class AddTransactionScreen extends ConsumerWidget {
                 bottom: SizeConstant.getHeightWithScreen(30),
               ),
               child: RadioIncomeExpense(onChanged: (value) {
-                seletedTransactionType = value ? 'Icome' : 'Expense';
+                seletedTransactionType = value ? 'Income' : 'Expense';
               }),
             ),
             CategoryDropdown(
@@ -162,8 +172,9 @@ class AddTransactionScreen extends ConsumerWidget {
   _resetFields() {
     descController.clear();
     amountController.clear();
-    selectedCategory = '';
+    selectedCategory = 'Select Category';
     selectedDate = DateTime.now();
     seletedTransactionType = '';
+    setState(() {});
   }
 }

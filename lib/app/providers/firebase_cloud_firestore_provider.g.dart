@@ -43,8 +43,8 @@ final transactionsProvider =
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef TransactionsRef = AutoDisposeStreamProviderRef<List<TransactionModel>>;
-String _$transactionsByTypeHash() =>
-    r'57d4459112e2f609079c60a8b93ea736c3014e62';
+String _$transactionsWithFilterHash() =>
+    r'743bd68545c1b6ea5817a50d10557b54efc7a4e4';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -67,31 +67,40 @@ class _SystemHash {
   }
 }
 
-/// See also [transactionsByType].
-@ProviderFor(transactionsByType)
-const transactionsByTypeProvider = TransactionsByTypeFamily();
+/// See also [transactionsWithFilter].
+@ProviderFor(transactionsWithFilter)
+const transactionsWithFilterProvider = TransactionsWithFilterFamily();
 
-/// See also [transactionsByType].
-class TransactionsByTypeFamily
+/// See also [transactionsWithFilter].
+class TransactionsWithFilterFamily
     extends Family<AsyncValue<List<TransactionModel>>> {
-  /// See also [transactionsByType].
-  const TransactionsByTypeFamily();
+  /// See also [transactionsWithFilter].
+  const TransactionsWithFilterFamily();
 
-  /// See also [transactionsByType].
-  TransactionsByTypeProvider call(
-    String type,
-  ) {
-    return TransactionsByTypeProvider(
-      type,
+  /// See also [transactionsWithFilter].
+  TransactionsWithFilterProvider call({
+    String? type,
+    List<String>? categories,
+    DateTime? startDate,
+    DateTime? endDate,
+  }) {
+    return TransactionsWithFilterProvider(
+      type: type,
+      categories: categories,
+      startDate: startDate,
+      endDate: endDate,
     );
   }
 
   @override
-  TransactionsByTypeProvider getProviderOverride(
-    covariant TransactionsByTypeProvider provider,
+  TransactionsWithFilterProvider getProviderOverride(
+    covariant TransactionsWithFilterProvider provider,
   ) {
     return call(
-      provider.type,
+      type: provider.type,
+      categories: provider.categories,
+      startDate: provider.startDate,
+      endDate: provider.endDate,
     );
   }
 
@@ -107,33 +116,42 @@ class TransactionsByTypeFamily
       _allTransitiveDependencies;
 
   @override
-  String? get name => r'transactionsByTypeProvider';
+  String? get name => r'transactionsWithFilterProvider';
 }
 
-/// See also [transactionsByType].
-class TransactionsByTypeProvider
+/// See also [transactionsWithFilter].
+class TransactionsWithFilterProvider
     extends AutoDisposeStreamProvider<List<TransactionModel>> {
-  /// See also [transactionsByType].
-  TransactionsByTypeProvider(
-    String type,
-  ) : this._internal(
-          (ref) => transactionsByType(
-            ref as TransactionsByTypeRef,
-            type,
+  /// See also [transactionsWithFilter].
+  TransactionsWithFilterProvider({
+    String? type,
+    List<String>? categories,
+    DateTime? startDate,
+    DateTime? endDate,
+  }) : this._internal(
+          (ref) => transactionsWithFilter(
+            ref as TransactionsWithFilterRef,
+            type: type,
+            categories: categories,
+            startDate: startDate,
+            endDate: endDate,
           ),
-          from: transactionsByTypeProvider,
-          name: r'transactionsByTypeProvider',
+          from: transactionsWithFilterProvider,
+          name: r'transactionsWithFilterProvider',
           debugGetCreateSourceHash:
               const bool.fromEnvironment('dart.vm.product')
                   ? null
-                  : _$transactionsByTypeHash,
-          dependencies: TransactionsByTypeFamily._dependencies,
+                  : _$transactionsWithFilterHash,
+          dependencies: TransactionsWithFilterFamily._dependencies,
           allTransitiveDependencies:
-              TransactionsByTypeFamily._allTransitiveDependencies,
+              TransactionsWithFilterFamily._allTransitiveDependencies,
           type: type,
+          categories: categories,
+          startDate: startDate,
+          endDate: endDate,
         );
 
-  TransactionsByTypeProvider._internal(
+  TransactionsWithFilterProvider._internal(
     super._createNotifier, {
     required super.name,
     required super.dependencies,
@@ -141,43 +159,59 @@ class TransactionsByTypeProvider
     required super.debugGetCreateSourceHash,
     required super.from,
     required this.type,
+    required this.categories,
+    required this.startDate,
+    required this.endDate,
   }) : super.internal();
 
-  final String type;
+  final String? type;
+  final List<String>? categories;
+  final DateTime? startDate;
+  final DateTime? endDate;
 
   @override
   Override overrideWith(
-    Stream<List<TransactionModel>> Function(TransactionsByTypeRef provider)
+    Stream<List<TransactionModel>> Function(TransactionsWithFilterRef provider)
         create,
   ) {
     return ProviderOverride(
       origin: this,
-      override: TransactionsByTypeProvider._internal(
-        (ref) => create(ref as TransactionsByTypeRef),
+      override: TransactionsWithFilterProvider._internal(
+        (ref) => create(ref as TransactionsWithFilterRef),
         from: from,
         name: null,
         dependencies: null,
         allTransitiveDependencies: null,
         debugGetCreateSourceHash: null,
         type: type,
+        categories: categories,
+        startDate: startDate,
+        endDate: endDate,
       ),
     );
   }
 
   @override
   AutoDisposeStreamProviderElement<List<TransactionModel>> createElement() {
-    return _TransactionsByTypeProviderElement(this);
+    return _TransactionsWithFilterProviderElement(this);
   }
 
   @override
   bool operator ==(Object other) {
-    return other is TransactionsByTypeProvider && other.type == type;
+    return other is TransactionsWithFilterProvider &&
+        other.type == type &&
+        other.categories == categories &&
+        other.startDate == startDate &&
+        other.endDate == endDate;
   }
 
   @override
   int get hashCode {
     var hash = _SystemHash.combine(0, runtimeType.hashCode);
     hash = _SystemHash.combine(hash, type.hashCode);
+    hash = _SystemHash.combine(hash, categories.hashCode);
+    hash = _SystemHash.combine(hash, startDate.hashCode);
+    hash = _SystemHash.combine(hash, endDate.hashCode);
 
     return _SystemHash.finish(hash);
   }
@@ -185,19 +219,36 @@ class TransactionsByTypeProvider
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-mixin TransactionsByTypeRef
+mixin TransactionsWithFilterRef
     on AutoDisposeStreamProviderRef<List<TransactionModel>> {
   /// The parameter `type` of this provider.
-  String get type;
+  String? get type;
+
+  /// The parameter `categories` of this provider.
+  List<String>? get categories;
+
+  /// The parameter `startDate` of this provider.
+  DateTime? get startDate;
+
+  /// The parameter `endDate` of this provider.
+  DateTime? get endDate;
 }
 
-class _TransactionsByTypeProviderElement
+class _TransactionsWithFilterProviderElement
     extends AutoDisposeStreamProviderElement<List<TransactionModel>>
-    with TransactionsByTypeRef {
-  _TransactionsByTypeProviderElement(super.provider);
+    with TransactionsWithFilterRef {
+  _TransactionsWithFilterProviderElement(super.provider);
 
   @override
-  String get type => (origin as TransactionsByTypeProvider).type;
+  String? get type => (origin as TransactionsWithFilterProvider).type;
+  @override
+  List<String>? get categories =>
+      (origin as TransactionsWithFilterProvider).categories;
+  @override
+  DateTime? get startDate =>
+      (origin as TransactionsWithFilterProvider).startDate;
+  @override
+  DateTime? get endDate => (origin as TransactionsWithFilterProvider).endDate;
 }
 
 String _$transactionsByCategoryHash() =>
@@ -491,11 +542,11 @@ class _TransactionsByDateRangeProviderElement
   DateTime get endDate => (origin as TransactionsByDateRangeProvider).endDate;
 }
 
-String _$totalIncomeHash() => r'86430f8a43efc38ee27460ba46d0c14bfb9888e4';
+String _$totalIncomeHash() => r'77f2a31132503b5f6d1a20ac8179c43c864f2796';
 
 /// See also [totalIncome].
 @ProviderFor(totalIncome)
-final totalIncomeProvider = AutoDisposeFutureProvider<double>.internal(
+final totalIncomeProvider = FutureProvider<double>.internal(
   totalIncome,
   name: r'totalIncomeProvider',
   debugGetCreateSourceHash:
@@ -506,12 +557,12 @@ final totalIncomeProvider = AutoDisposeFutureProvider<double>.internal(
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-typedef TotalIncomeRef = AutoDisposeFutureProviderRef<double>;
-String _$totalExpensesHash() => r'8a46611b135c3944b1bbcd54361ea4717d8c22a1';
+typedef TotalIncomeRef = FutureProviderRef<double>;
+String _$totalExpensesHash() => r'a804e3fe01ad0761313e9cb5ff7974e8caf548aa';
 
 /// See also [totalExpenses].
 @ProviderFor(totalExpenses)
-final totalExpensesProvider = AutoDisposeFutureProvider<double>.internal(
+final totalExpensesProvider = FutureProvider<double>.internal(
   totalExpenses,
   name: r'totalExpensesProvider',
   debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
@@ -523,9 +574,9 @@ final totalExpensesProvider = AutoDisposeFutureProvider<double>.internal(
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-typedef TotalExpensesRef = AutoDisposeFutureProviderRef<double>;
+typedef TotalExpensesRef = FutureProviderRef<double>;
 String _$transactionNotifierHash() =>
-    r'bff401eb2dba53ff16b854271ee8fd50baceb774';
+    r'cc669f96fef62bae0d3d1cdf1425f9ce9379eb45';
 
 /// See also [TransactionNotifier].
 @ProviderFor(TransactionNotifier)

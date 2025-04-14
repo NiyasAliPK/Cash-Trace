@@ -1,11 +1,10 @@
 // lib/screens/dash_screen.dart
-import 'package:cash_trace/app/screens/home/view/home_screen.dart';
 import 'package:cash_trace/app/providers/dash_provider.dart';
+import 'package:cash_trace/app/screens/home/view/home_screen.dart';
 import 'package:cash_trace/app/stats/view/stats_screen.dart';
 import 'package:cash_trace/app/widgets/common_appbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
 
 class DashScreen extends ConsumerWidget {
   const DashScreen({super.key});
@@ -24,6 +23,9 @@ class DashScreen extends ConsumerWidget {
         child: screens[selectedIndex], // Display the selected screen
       ),
       bottomNavigationBar: BottomNavigationBar(
+        showUnselectedLabels: false,
+        backgroundColor: Colors.transparent,
+        elevation: 0,
         currentIndex: selectedIndex, // Set the current selected index
         onTap: (index) {
           // Update the selected index using the provider

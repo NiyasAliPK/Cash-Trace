@@ -43,7 +43,7 @@ final routerProvider = Provider<GoRouter>((ref) {
               name: "add",
               path: '/add',
               builder: (context, state) => AddTransactionScreen(),
-            )
+            ),
           ]),
     ],
   );
