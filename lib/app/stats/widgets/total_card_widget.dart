@@ -16,7 +16,7 @@ class TotalAmountCard extends StatelessWidget {
         width: double.infinity,
         padding: EdgeInsets.all(SizeConstant.getHeightWithScreen(16)),
         decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.secondary,
+          color: Theme.of(context).colorScheme.primary,
           borderRadius: BorderRadius.circular(8),
         ),
         child: Consumer(
@@ -36,18 +36,15 @@ class TotalAmountCard extends StatelessWidget {
                             color: Theme.of(context).colorScheme.onSecondary,
                             fontWeight: FontWeight.bold),
                       ),
-                      const SizedBox(height: 8),
-                      SizedBox(
-                        width: double.infinity,
-                        child: Text(
-                          data.toString(),
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            fontSize: SizeConstant.heavyFont,
-                            fontWeight: FontWeight.bold,
-                            color: Theme.of(context).colorScheme.onSecondary,
-                          ),
+                      SizedBox(height: SizeConstant.getHeightWithScreen(8)),
+                      Text(
+                        data.toString(),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontSize: SizeConstant.heavyFont,
+                          fontWeight: FontWeight.bold,
+                          color: Theme.of(context).colorScheme.onSecondary,
                         ),
                       ),
                     ],
@@ -56,7 +53,9 @@ class TotalAmountCard extends StatelessWidget {
                     child: Text("Oops...!"),
                   ),
                   loading: () => Center(
-                    child: CircularProgressIndicator.adaptive(),
+                    child: CircularProgressIndicator.adaptive(
+                        backgroundColor:
+                            Theme.of(context).colorScheme.secondary),
                   ),
                 );
           },

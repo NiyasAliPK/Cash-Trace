@@ -20,14 +20,14 @@ Future<TransactionModel> singleTransaction(Ref ref, String id) async {
 }
 
 // Provider to get all transactions as a stream
-@riverpod
+@Riverpod(keepAlive: true)
 Stream<List<TransactionModel>> transactions(Ref ref) {
   final repository = ref.watch(transactionRepositoryProvider);
   return repository.getAllTransactions();
 }
 
 // Provider to get transactions by type (income/expense)
-@riverpod
+@Riverpod(keepAlive: true)
 Stream<List<TransactionModel>> transactionsWithFilter(
   Ref ref, {
   String? type,

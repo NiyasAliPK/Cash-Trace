@@ -42,6 +42,7 @@ class _CategoryDropdownState extends State<CategoryDropdown> {
     super.initState();
     _selectedCategory = widget.initialValue;
   }
+  
 
   @override
   Widget build(BuildContext context) {

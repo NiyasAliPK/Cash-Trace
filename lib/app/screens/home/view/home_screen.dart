@@ -23,7 +23,7 @@ class HomeScreen extends ConsumerWidget {
                         data: (data) {
                           if (data.isEmpty) {
                             return Center(
-                                child: Text("Oops! No transactions found"));
+                                child: Text("No transactions found"));
                           }
                           return ListView.separated(
                             padding: EdgeInsets.only(

@@ -45,13 +45,18 @@ final routerProvider = Provider<GoRouter>((ref) {
               name: "add",
               path: '/add',
               builder: (context, state) {
-                final bool isEditMode =
-                    (state.extra as Map<String, dynamic>)['isEditMode'] ??
-                        false;
-                final TransactionModel? transaction =
-                    (state.extra as Map<String, dynamic>)['transaction'];
-                return AddTransactionScreen(
-                    isEditMode: isEditMode, transaction: transaction);
+                if (state.extra == null) {
+                  return const AddTransactionScreen();
+                } else {
+                  final bool isEditMode = state.extra == null
+                      ? false
+                      : (state.extra as Map<String, dynamic>)['isEditMode'] ??
+                          false;
+                  final TransactionModel? transaction =
+                      (state.extra as Map<String, dynamic>)['transaction'];
+                  return AddTransactionScreen(
+                      isEditMode: isEditMode, transaction: transaction);
+                }
               },
             ),
             GoRoute(

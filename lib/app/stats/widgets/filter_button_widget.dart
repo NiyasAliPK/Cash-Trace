@@ -60,8 +60,8 @@ class _FilterButtonState extends State<FilterButton> {
                             onPressed: () async {
                               final picked = await showDateRangePicker(
                                 context: context,
-                                firstDate: DateTime(2000),
-                                lastDate: DateTime(2100),
+                                firstDate: DateTime(2025),
+                                lastDate: DateTime.now(),
                                 initialDateRange:
                                     _startDate != null && _endDate != null
                                         ? DateTimeRange(

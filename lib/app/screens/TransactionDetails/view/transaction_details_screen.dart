@@ -27,93 +27,105 @@ class TransactionDetailsScreen extends StatelessWidget {
         elevation: 0,
         centerTitle: true,
       ),
-      body: Padding(
-        padding: EdgeInsets.only(top: SizeConstant.getHeightWithScreen(120)),
+      body: Center(
+        // Added Center widget here
         child: SingleChildScrollView(
           padding: EdgeInsets.all(SizeConstant.getHeightWithScreen(16)),
-          child: Card(
-            elevation: 7,
-            shape:
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-            child: Padding(
-              padding: EdgeInsets.only(
-                  left: SizeConstant.getHeightWithScreen(16),
-                  right: SizeConstant.getHeightWithScreen(16),
-                  bottom: SizeConstant.getHeightWithScreen(16)),
-              child: Consumer(
-                builder: (context, ref, child) {
-                  return ref
-                      .watch(singleTransactionProvider(transaction.id))
-                      .when(
-                          data: (data) => Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Align(
-                                    alignment: Alignment.centerRight,
-                                    child: TextButton.icon(
-                                        onPressed: () async {
-                                          final Map<String, dynamic> extras = {
-                                            'transaction': data,
-                                            'isEditMode': true,
-                                          };
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Card(
+                elevation: 7,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12)),
+                child: Padding(
+                  padding: EdgeInsets.only(
+                      left: SizeConstant.getHeightWithScreen(16),
+                      right: SizeConstant.getHeightWithScreen(16),
+                      bottom: SizeConstant.getHeightWithScreen(28)),
+                  child: Consumer(
+                    builder: (context, ref, child) {
+                      return ref
+                          .watch(singleTransactionProvider(transaction.id))
+                          .when(
+                              data: (data) => Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      SizedBox(
+                                          height:
+                                              SizeConstant.getHeightWithScreen(
+                                                  5)),
+                                      Align(
+                                        alignment: Alignment.centerRight,
+                                        child: TextButton.icon(
+                                            onPressed: () async {
+                                              final Map<String, dynamic>
+                                                  extras = {
+                                                'transaction': data,
+                                                'isEditMode': true,
+                                              };
 
-                                          final result =
-                                              await context.pushNamed(
-                                            "add",
-                                            extra: extras,
-                                          );
+                                              final result =
+                                                  await context.pushNamed(
+                                                "add",
+                                                extra: extras,
+                                              );
 
-                                          // Check if edit was successful
-                                          if (result == true) {
-                                            // Refetch the provider to reload the data
-                                            ref.invalidate(
-                                                singleTransactionProvider(
-                                                    transaction.id));
-                                          }
-                                        },
-                                        label: Text("Edit"),
-                                        icon: Icon(Icons.edit)),
+                                              // Check if edit was successful
+                                              if (result == true) {
+                                                // Refetch the provider to reload the data
+                                                ref.invalidate(
+                                                    singleTransactionProvider(
+                                                        transaction.id));
+                                              }
+                                            },
+                                            label: Text("Edit"),
+                                            icon: Icon(Icons.edit)),
+                                      ),
+                                      _detailItem(
+                                          context: context,
+                                          'Amount',
+                                          data.transactionAmount,
+                                          valueColor: isIncome
+                                              ? Colors.green
+                                              : Colors.red),
+                                      _detailItem(
+                                          context: context,
+                                          'Type',
+                                          data.transactionType),
+                                      _detailItem(
+                                          context: context,
+                                          'Category',
+                                          data.category),
+                                      _detailItem(
+                                          context: context,
+                                          'Date',
+                                          formattedDate),
+                                      _detailItem(
+                                          context: context,
+                                          'Description',
+                                          data.transactionDescription),
+                                    ],
                                   ),
-                                  _detailItem(
-                                      context: context,
-                                      'Amount',
-                                      data.transactionAmount,
-                                      valueColor:
-                                          isIncome ? Colors.green : Colors.red),
-                                  _detailItem(
-                                      context: context,
-                                      'Type',
-                                      data.transactionType),
-                                  _detailItem(
-                                      context: context,
-                                      'Category',
-                                      data.category),
-                                  _detailItem(
-                                      context: context, 'Date', formattedDate),
-                                  // _detailItem(
-                                  //     context: context,
-                                  //     'Status',
-                                  //     data.transactionStatus),
-                                  _detailItem(
-                                      context: context,
-                                      'Description',
-                                      data.transactionDescription),
-                                ],
-                              ),
-                          error: (error, stackTrace) => SizedBox(
-                              height: SizeConstant.getHeightWithScreen(200),
-                              child: Center(
-                                child: Text(error.toString()),
-                              )),
-                          loading: () => SizedBox(
-                                height: SizeConstant.getHeightWithScreen(200),
-                                child: Center(
-                                  child: CircularProgressIndicator.adaptive(),
-                                ),
-                              ));
-                },
+                              error: (error, stackTrace) => SizedBox(
+                                  height: SizeConstant.getHeightWithScreen(200),
+                                  child: Center(
+                                    child: Text(error.toString()),
+                                  )),
+                              loading: () => SizedBox(
+                                    height:
+                                        SizeConstant.getHeightWithScreen(200),
+                                    child: Center(
+                                      child:
+                                          CircularProgressIndicator.adaptive(),
+                                    ),
+                                  ));
+                    },
+                  ),
+                ),
               ),
-            ),
+            ],
           ),
         ),
       ),

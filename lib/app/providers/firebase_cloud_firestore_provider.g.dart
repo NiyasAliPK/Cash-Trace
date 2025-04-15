@@ -179,12 +179,11 @@ class _SingleTransactionProviderElement
   String get id => (origin as SingleTransactionProvider).id;
 }
 
-String _$transactionsHash() => r'd38e8953b1a92baa01301079ecae6362ab14de6c';
+String _$transactionsHash() => r'42504cfe3fbc12feae9b142965a225fd2a90b9fc';
 
 /// See also [transactions].
 @ProviderFor(transactions)
-final transactionsProvider =
-    AutoDisposeStreamProvider<List<TransactionModel>>.internal(
+final transactionsProvider = StreamProvider<List<TransactionModel>>.internal(
   transactions,
   name: r'transactionsProvider',
   debugGetCreateSourceHash:
@@ -195,9 +194,9 @@ final transactionsProvider =
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-typedef TransactionsRef = AutoDisposeStreamProviderRef<List<TransactionModel>>;
+typedef TransactionsRef = StreamProviderRef<List<TransactionModel>>;
 String _$transactionsWithFilterHash() =>
-    r'0dfe56d6dbead7f204f04fde119ac7efc92aa60c';
+    r'b9b43daaf265d0027fa43a15dfb0e39baa8165f6';
 
 /// See also [transactionsWithFilter].
 @ProviderFor(transactionsWithFilter)
@@ -253,7 +252,7 @@ class TransactionsWithFilterFamily
 
 /// See also [transactionsWithFilter].
 class TransactionsWithFilterProvider
-    extends AutoDisposeStreamProvider<List<TransactionModel>> {
+    extends StreamProvider<List<TransactionModel>> {
   /// See also [transactionsWithFilter].
   TransactionsWithFilterProvider({
     String? type,
@@ -324,7 +323,7 @@ class TransactionsWithFilterProvider
   }
 
   @override
-  AutoDisposeStreamProviderElement<List<TransactionModel>> createElement() {
+  StreamProviderElement<List<TransactionModel>> createElement() {
     return _TransactionsWithFilterProviderElement(this);
   }
 
@@ -351,8 +350,7 @@ class TransactionsWithFilterProvider
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-mixin TransactionsWithFilterRef
-    on AutoDisposeStreamProviderRef<List<TransactionModel>> {
+mixin TransactionsWithFilterRef on StreamProviderRef<List<TransactionModel>> {
   /// The parameter `type` of this provider.
   String? get type;
 
@@ -367,7 +365,7 @@ mixin TransactionsWithFilterRef
 }
 
 class _TransactionsWithFilterProviderElement
-    extends AutoDisposeStreamProviderElement<List<TransactionModel>>
+    extends StreamProviderElement<List<TransactionModel>>
     with TransactionsWithFilterRef {
   _TransactionsWithFilterProviderElement(super.provider);
 

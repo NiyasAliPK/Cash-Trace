@@ -28,7 +28,7 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen> {
 
   final TextEditingController amountController = TextEditingController();
 
-  String selectedCategory = '';
+  String selectedCategory = 'Select Category';
 
   DateTime selectedDate = DateTime.now();
 
@@ -62,6 +62,7 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen> {
       },
     );
     return Scaffold(
+      appBar: AppBar(backgroundColor: Colors.transparent, elevation: 0),
       body: SafeArea(
           child: Padding(
         padding: EdgeInsets.all(SizeConstant.getHeightWithScreen(16)),
@@ -80,6 +81,7 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen> {
                 bottom: SizeConstant.getHeightWithScreen(30),
               ),
               child: RadioIncomeExpense(
+                  key: Key(seletedTransactionType),
                   initialValue:
                       seletedTransactionType == "Income" ? true : false,
                   onChanged: (value) {
@@ -87,12 +89,14 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen> {
                   }),
             ),
             CategoryDropdown(
+              key: Key(selectedCategory),
               initialValue: selectedCategory,
               onChanged: (value) {
                 selectedCategory = value;
               },
             ),
             DatePickerField(
+              key: Key(selectedDate.toIso8601String()),
               initialDate: selectedDate,
               onChanged: (value) {
                 selectedDate = value;
@@ -215,7 +219,7 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen> {
     amountController.clear();
     selectedCategory = 'Select Category';
     selectedDate = DateTime.now();
-    seletedTransactionType = '';
+    seletedTransactionType = 'Income';
     setState(() {});
   }
 
