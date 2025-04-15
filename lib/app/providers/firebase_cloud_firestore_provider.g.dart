@@ -7,7 +7,7 @@ part of 'firebase_cloud_firestore_provider.dart';
 // **************************************************************************
 
 String _$transactionRepositoryHash() =>
-    r'bb4e53116b0e03c7d3960a39f34dc79136efb60b';
+    r'31e53bde2cd20cda40a2b5caa9bc93a81d3478cd';
 
 /// See also [transactionRepository].
 @ProviderFor(transactionRepository)
@@ -26,25 +26,7 @@ final transactionRepositoryProvider =
 // ignore: unused_element
 typedef TransactionRepositoryRef
     = AutoDisposeProviderRef<TransactionRepository>;
-String _$transactionsHash() => r'5845e47c71ec0d38fdb9fe2c755ed7cb4302f20b';
-
-/// See also [transactions].
-@ProviderFor(transactions)
-final transactionsProvider =
-    AutoDisposeStreamProvider<List<TransactionModel>>.internal(
-  transactions,
-  name: r'transactionsProvider',
-  debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$transactionsHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
-
-@Deprecated('Will be removed in 3.0. Use Ref instead')
-// ignore: unused_element
-typedef TransactionsRef = AutoDisposeStreamProviderRef<List<TransactionModel>>;
-String _$transactionsWithFilterHash() =>
-    r'743bd68545c1b6ea5817a50d10557b54efc7a4e4';
+String _$singleTransactionHash() => r'91fd1942df2ffeb5597d7b5c9cea98d67cc3d781';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -66,6 +48,156 @@ class _SystemHash {
     return 0x1fffffff & (hash + ((0x00003fff & hash) << 15));
   }
 }
+
+/// See also [singleTransaction].
+@ProviderFor(singleTransaction)
+const singleTransactionProvider = SingleTransactionFamily();
+
+/// See also [singleTransaction].
+class SingleTransactionFamily extends Family<AsyncValue<TransactionModel>> {
+  /// See also [singleTransaction].
+  const SingleTransactionFamily();
+
+  /// See also [singleTransaction].
+  SingleTransactionProvider call(
+    String id,
+  ) {
+    return SingleTransactionProvider(
+      id,
+    );
+  }
+
+  @override
+  SingleTransactionProvider getProviderOverride(
+    covariant SingleTransactionProvider provider,
+  ) {
+    return call(
+      provider.id,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'singleTransactionProvider';
+}
+
+/// See also [singleTransaction].
+class SingleTransactionProvider
+    extends AutoDisposeFutureProvider<TransactionModel> {
+  /// See also [singleTransaction].
+  SingleTransactionProvider(
+    String id,
+  ) : this._internal(
+          (ref) => singleTransaction(
+            ref as SingleTransactionRef,
+            id,
+          ),
+          from: singleTransactionProvider,
+          name: r'singleTransactionProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$singleTransactionHash,
+          dependencies: SingleTransactionFamily._dependencies,
+          allTransitiveDependencies:
+              SingleTransactionFamily._allTransitiveDependencies,
+          id: id,
+        );
+
+  SingleTransactionProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.id,
+  }) : super.internal();
+
+  final String id;
+
+  @override
+  Override overrideWith(
+    FutureOr<TransactionModel> Function(SingleTransactionRef provider) create,
+  ) {
+    return ProviderOverride(
+      origin: this,
+      override: SingleTransactionProvider._internal(
+        (ref) => create(ref as SingleTransactionRef),
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        id: id,
+      ),
+    );
+  }
+
+  @override
+  AutoDisposeFutureProviderElement<TransactionModel> createElement() {
+    return _SingleTransactionProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is SingleTransactionProvider && other.id == id;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, id.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+mixin SingleTransactionRef on AutoDisposeFutureProviderRef<TransactionModel> {
+  /// The parameter `id` of this provider.
+  String get id;
+}
+
+class _SingleTransactionProviderElement
+    extends AutoDisposeFutureProviderElement<TransactionModel>
+    with SingleTransactionRef {
+  _SingleTransactionProviderElement(super.provider);
+
+  @override
+  String get id => (origin as SingleTransactionProvider).id;
+}
+
+String _$transactionsHash() => r'd38e8953b1a92baa01301079ecae6362ab14de6c';
+
+/// See also [transactions].
+@ProviderFor(transactions)
+final transactionsProvider =
+    AutoDisposeStreamProvider<List<TransactionModel>>.internal(
+  transactions,
+  name: r'transactionsProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$transactionsHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+typedef TransactionsRef = AutoDisposeStreamProviderRef<List<TransactionModel>>;
+String _$transactionsWithFilterHash() =>
+    r'0dfe56d6dbead7f204f04fde119ac7efc92aa60c';
 
 /// See also [transactionsWithFilter].
 @ProviderFor(transactionsWithFilter)
@@ -252,7 +384,7 @@ class _TransactionsWithFilterProviderElement
 }
 
 String _$transactionsByCategoryHash() =>
-    r'07898130321c5ca10a6f780f1238134903858814';
+    r'01d4029663f089e2e53b9b183b67a48327c45e24';
 
 /// See also [transactionsByCategory].
 @ProviderFor(transactionsByCategory)
@@ -542,7 +674,7 @@ class _TransactionsByDateRangeProviderElement
   DateTime get endDate => (origin as TransactionsByDateRangeProvider).endDate;
 }
 
-String _$totalIncomeHash() => r'77f2a31132503b5f6d1a20ac8179c43c864f2796';
+String _$totalIncomeHash() => r'68eb9a058c13419db3dab154cf81b5efa1e05024';
 
 /// See also [totalIncome].
 @ProviderFor(totalIncome)
@@ -558,7 +690,7 @@ final totalIncomeProvider = FutureProvider<double>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef TotalIncomeRef = FutureProviderRef<double>;
-String _$totalExpensesHash() => r'a804e3fe01ad0761313e9cb5ff7974e8caf548aa';
+String _$totalExpensesHash() => r'3f75cdd2421502c16b3c71ef024dee668bbc5a24';
 
 /// See also [totalExpenses].
 @ProviderFor(totalExpenses)

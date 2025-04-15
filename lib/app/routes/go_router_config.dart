@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:cash_trace/app/contants/common_enums.dart';
 import 'package:cash_trace/app/models/common/transaction_model.dart';
 import 'package:cash_trace/app/providers/auth_provider.dart';
@@ -46,13 +44,21 @@ final routerProvider = Provider<GoRouter>((ref) {
             GoRoute(
               name: "add",
               path: '/add',
-              builder: (context, state) => AddTransactionScreen(),
+              builder: (context, state) {
+                final bool isEditMode =
+                    (state.extra as Map<String, dynamic>)['isEditMode'] ??
+                        false;
+                final TransactionModel? transaction =
+                    (state.extra as Map<String, dynamic>)['transaction'];
+                return AddTransactionScreen(
+                    isEditMode: isEditMode, transaction: transaction);
+              },
             ),
             GoRoute(
               name: "details",
               path: '/details',
               builder: (context, state) {
-               final TransactionModel data = state.extra as TransactionModel;
+                final TransactionModel data = state.extra as TransactionModel;
 
                 return TransactionDetailsScreen(
                   transaction: data,

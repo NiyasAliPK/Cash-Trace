@@ -40,7 +40,7 @@ class _CategoryDropdownState extends State<CategoryDropdown> {
   @override
   void initState() {
     super.initState();
-    _selectedCategory = "Select Category";
+    _selectedCategory = widget.initialValue;
   }
 
   @override

@@ -2,19 +2,26 @@
 import 'package:cash_trace/app/contants/common_enums.dart';
 import 'package:cash_trace/app/models/common/transaction_model.dart';
 import 'package:cash_trace/app/repo/cloud_firestore_repository.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'firebase_cloud_firestore_provider.g.dart';
 
 // Repository provider
 @riverpod
-TransactionRepository transactionRepository(ref) {
+TransactionRepository transactionRepository(Ref ref) {
   return TransactionRepository();
+}
+
+@riverpod
+Future<TransactionModel> singleTransaction(Ref ref, String id) async {
+  final repository = ref.watch(transactionRepositoryProvider);
+  return repository.getTransaction(id);
 }
 
 // Provider to get all transactions as a stream
 @riverpod
-Stream<List<TransactionModel>> transactions(ref) {
+Stream<List<TransactionModel>> transactions(Ref ref) {
   final repository = ref.watch(transactionRepositoryProvider);
   return repository.getAllTransactions();
 }
@@ -22,14 +29,13 @@ Stream<List<TransactionModel>> transactions(ref) {
 // Provider to get transactions by type (income/expense)
 @riverpod
 Stream<List<TransactionModel>> transactionsWithFilter(
-  ref, {
+  Ref ref, {
   String? type,
   List<String>? categories,
   DateTime? startDate,
   DateTime? endDate,
 }) {
-  final repository =
-      ref.watch(transactionRepositoryProvider) as TransactionRepository;
+  final repository = ref.watch(transactionRepositoryProvider);
   return repository.getFilteredTransactions(
       type: type,
       endDate: endDate,
@@ -39,7 +45,8 @@ Stream<List<TransactionModel>> transactionsWithFilter(
 
 // Provider to get transactions by category
 @riverpod
-Stream<List<TransactionModel>> transactionsByCategory(ref, String category) {
+Stream<List<TransactionModel>> transactionsByCategory(
+    Ref ref, String category) {
   final repository = ref.watch(transactionRepositoryProvider);
   return repository.getTransactionsByCategory(category);
 }
@@ -54,14 +61,14 @@ Stream<List<TransactionModel>> transactionsByDateRange(
 
 // Provider for total income
 @Riverpod(keepAlive: true)
-Future<double> totalIncome(ref) {
+Future<double> totalIncome(Ref ref) {
   final repository = ref.watch(transactionRepositoryProvider);
   return repository.getTotalIncome();
 }
 
 // Provider for total expenses
 @Riverpod(keepAlive: true)
-Future<double> totalExpenses(ref) {
+Future<double> totalExpenses(Ref ref) {
   final repository = ref.watch(transactionRepositoryProvider);
   return repository.getTotalExpenses();
 }

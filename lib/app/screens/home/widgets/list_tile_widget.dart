@@ -1,6 +1,9 @@
+import 'package:cash_trace/app/contants/common_enums.dart';
 import 'package:cash_trace/app/contants/size_constants.dart';
 import 'package:cash_trace/app/models/common/transaction_model.dart';
+import 'package:cash_trace/app/providers/firebase_cloud_firestore_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 
@@ -114,29 +117,70 @@ class TransactionTile extends StatelessWidget {
                 icon: Icon(Icons.more_vert),
                 onSelected: (value) {
                   if (value == 'edit') {
-                    // TODO: Implement navigation to edit screen
+                    final Map<String, dynamic> extras = {
+                      'transaction': transaction,
+                      'isEditMode': true,
+                    };
+
+                    context.pushNamed(
+                      "add",
+                      extra: extras,
+                    );
                   } else if (value == 'delete') {
                     showDialog(
                       context: context,
-                      builder: (context) => AlertDialog(
-                        title: Text('Confirm Delete'),
-                        content: Text(
-                            'Are you sure you want to delete this transaction?'),
-                        actions: [
-                          TextButton(
-                            onPressed: () {
-                              Navigator.of(context).pop();
+                      builder: (context) => Consumer(
+                        builder: (context, ref, child) {
+                          final currentState =
+                              ref.watch(transactionNotifierProvider);
+                          ref.listen<TransactionStates>(
+                            transactionNotifierProvider,
+                            (previous, next) {
+                              if (next == TransactionStates.success) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                      content: Text(
+                                          "Transaction deleted successfully")),
+                                );
+                                context.pop();
+                              }
                             },
-                            child: Text('No'),
-                          ),
-                          TextButton(
-                            onPressed: () {
-                              // TODO: Implement delete functionality
-                              Navigator.of(context).pop();
-                            },
-                            child: Text('Yes'),
-                          ),
-                        ],
+                          );
+                          return AlertDialog(
+                            title: Text('Confirm Delete',
+                                style: TextStyle(
+                                    fontSize: SizeConstant.largeFont,
+                                    fontWeight: FontWeight.bold)),
+                            content: Text(
+                              'Are you sure you want to delete this transaction?',
+                              style:
+                                  TextStyle(fontSize: SizeConstant.mediumFont),
+                            ),
+                            actions: currentState == TransactionStates.loading
+                                ? [
+                                    Center(
+                                        child: CircularProgressIndicator
+                                            .adaptive())
+                                  ]
+                                : [
+                                    TextButton(
+                                      onPressed: () {
+                                        context.pop();
+                                      },
+                                      child: Text('No'),
+                                    ),
+                                    TextButton(
+                                      onPressed: () {
+                                        ref
+                                            .read(transactionNotifierProvider
+                                                .notifier)
+                                            .deleteTransaction(transaction.id);
+                                      },
+                                      child: Text('Yes'),
+                                    ),
+                                  ],
+                          );
+                        },
                       ),
                     );
                   }

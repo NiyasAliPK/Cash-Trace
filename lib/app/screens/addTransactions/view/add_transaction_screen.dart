@@ -8,9 +8,13 @@ import 'package:cash_trace/app/screens/addTransactions/widgets/date_picker_widge
 import 'package:cash_trace/app/screens/addTransactions/widgets/income_expense_radio_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
 class AddTransactionScreen extends ConsumerStatefulWidget {
-  const AddTransactionScreen({super.key});
+  final bool isEditMode;
+  final TransactionModel? transaction;
+  const AddTransactionScreen(
+      {super.key, this.isEditMode = false, this.transaction});
 
   @override
   ConsumerState<AddTransactionScreen> createState() =>
@@ -32,17 +36,27 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen> {
 
   @override
   Widget build(BuildContext context) {
+    if (widget.isEditMode) {
+      _setExistingTransactionData();
+    }
     ref.listen<TransactionStates>(
       transactionNotifierProvider,
-      (previous, next) {
+      (previous, next) async {
         if (next == TransactionStates.success) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("Transaction added successfully")),
+            SnackBar(
+                content: Text(
+                    "Transaction ${widget.isEditMode ? "updated" : "added"} successfully")),
           );
+          if (widget.isEditMode) {
+            context.pop(true);
+          }
           _resetFields();
         } else if (next == TransactionStates.error) {
           ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("Error adding transaction")),
+            SnackBar(
+                content: Text(
+                    "Error ${widget.isEditMode ? "updating" : "adding"} transaction")),
           );
         }
       },
@@ -57,7 +71,7 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen> {
           children: [
             SizedBox(height: SizeConstant.getHeightWithScreen(30)),
             Text(
-              "Add Transaction",
+              "${widget.isEditMode ? "Update" : "Add"} Transaction",
               style: Theme.of(context).textTheme.headlineLarge,
             ),
             Padding(
@@ -65,16 +79,21 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen> {
                 top: SizeConstant.getHeightWithScreen(30),
                 bottom: SizeConstant.getHeightWithScreen(30),
               ),
-              child: RadioIncomeExpense(onChanged: (value) {
-                seletedTransactionType = value ? 'Income' : 'Expense';
-              }),
+              child: RadioIncomeExpense(
+                  initialValue:
+                      seletedTransactionType == "Income" ? true : false,
+                  onChanged: (value) {
+                    seletedTransactionType = value ? 'Income' : 'Expense';
+                  }),
             ),
             CategoryDropdown(
+              initialValue: selectedCategory,
               onChanged: (value) {
                 selectedCategory = value;
               },
             ),
             DatePickerField(
+              initialDate: selectedDate,
               onChanged: (value) {
                 selectedDate = value;
               },
@@ -142,24 +161,46 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen> {
                     if (_formKey.currentState!.validate()) {
                       var user = ref.read(userProvider);
                       var transaction = TransactionModel(
-                          id: DateTime.now().microsecondsSinceEpoch.toString(),
+                          id: widget.isEditMode
+                              ? widget.transaction!.id
+                              : DateTime.now()
+                                  .microsecondsSinceEpoch
+                                  .toString(),
                           type: seletedTransactionType,
-                          userId: user?.uid.toString() ?? 'null',
+                          userId: widget.isEditMode
+                              ? widget.transaction!.userId
+                              : user?.uid.toString() ?? 'null',
                           category: selectedCategory,
                           transactionType: seletedTransactionType,
                           transactionDate: selectedDate,
                           transactionAmount: amountController.text,
                           transactionStatus: 'TODO',
                           transactionDescription: descController.text);
-                      ref
-                          .read(transactionNotifierProvider.notifier)
-                          .addTransaction(transaction);
+
+                      if (widget.isEditMode) {
+                        if (!_isTransactionChanged()) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text("No changes found"),
+                              duration: Duration(seconds: 2),
+                            ),
+                          );
+                          return;
+                        }
+                        ref
+                            .read(transactionNotifierProvider.notifier)
+                            .updateTransaction(transaction);
+                      } else {
+                        ref
+                            .read(transactionNotifierProvider.notifier)
+                            .addTransaction(transaction);
+                      }
                     }
                   },
                   child: currentState == TransactionStates.loading
                       ? CircularProgressIndicator.adaptive()
                       : Text(
-                          "Add Transaction",
+                          "${widget.isEditMode ? "update" : "Add"} Transaction",
                           style: TextStyle(fontSize: SizeConstant.largeFont),
                         ));
             })
@@ -176,5 +217,26 @@ class _AddTransactionScreenState extends ConsumerState<AddTransactionScreen> {
     selectedDate = DateTime.now();
     seletedTransactionType = '';
     setState(() {});
+  }
+
+  void _setExistingTransactionData() {
+    descController.text = widget.transaction?.transactionDescription ?? '';
+    amountController.text = widget.transaction?.transactionAmount ?? '';
+    selectedCategory = widget.transaction?.category ?? 'Select Category';
+    selectedDate = widget.transaction?.transactionDate ?? DateTime.now();
+    seletedTransactionType = widget.transaction?.transactionType ?? 'Income';
+  }
+
+  bool _isTransactionChanged() {
+    if (widget.transaction == null) return true;
+
+    // Compare all fields that can be edited
+    return descController.text != widget.transaction!.transactionDescription ||
+        amountController.text != widget.transaction!.transactionAmount ||
+        selectedCategory != widget.transaction!.category ||
+        selectedDate.day != widget.transaction!.transactionDate.day ||
+        selectedDate.month != widget.transaction!.transactionDate.month ||
+        selectedDate.year != widget.transaction!.transactionDate.year ||
+        seletedTransactionType != widget.transaction!.transactionType;
   }
 }
