@@ -1,5 +1,9 @@
+import 'dart:convert';
+
 import 'package:cash_trace/app/contants/common_enums.dart';
+import 'package:cash_trace/app/models/common/transaction_model.dart';
 import 'package:cash_trace/app/providers/auth_provider.dart';
+import 'package:cash_trace/app/screens/TransactionDetails/view/transaction_details_screen.dart';
 import 'package:cash_trace/app/screens/addTransactions/view/add_transaction_screen.dart';
 import 'package:cash_trace/app/screens/auth/views/login_screen.dart';
 import 'package:cash_trace/app/screens/dash/views/dash_screen.dart';
@@ -43,6 +47,17 @@ final routerProvider = Provider<GoRouter>((ref) {
               name: "add",
               path: '/add',
               builder: (context, state) => AddTransactionScreen(),
+            ),
+            GoRoute(
+              name: "details",
+              path: '/details',
+              builder: (context, state) {
+               final TransactionModel data = state.extra as TransactionModel;
+
+                return TransactionDetailsScreen(
+                  transaction: data,
+                );
+              },
             ),
           ]),
     ],
