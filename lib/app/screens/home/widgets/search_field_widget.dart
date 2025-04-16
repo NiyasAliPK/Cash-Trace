@@ -5,20 +5,17 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class SearchFieldWidget extends ConsumerWidget {
   final Function(String newValue) onSearch;
-  
-  const SearchFieldWidget({
-    super.key, 
-    required this.onSearch
-  });
+
+  const SearchFieldWidget({super.key, required this.onSearch});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     // Get the current search query from provider
     final currentQuery = ref.watch(searchQueryProvider);
-    
+
     // Create a controller with the current query value
     final controller = TextEditingController(text: currentQuery);
-    
+
     return Padding(
       padding: EdgeInsets.only(bottom: SizeConstant.getHeightWithScreen(15)),
       child: Row(
@@ -44,9 +41,8 @@ class SearchFieldWidget extends ConsumerWidget {
               ),
             ),
           ),
-          IconButton(
-            icon: Icon(Icons.search_rounded,
-                size: SizeConstant.getHeightWithScreen(30)),
+          TextButton(
+            child: Text("Search"),
             onPressed: () {
               onSearch(controller.text);
             },
