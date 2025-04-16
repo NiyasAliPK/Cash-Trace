@@ -1,0 +1,2 @@
+/Users/niyasali/Documents/Projects/cash_trace/android/app/.cxx/RelWithDebInfo/16643s4h/x86_64/CMakeFiles/edit_cache.dir
+/Users/niyasali/Documents/Projects/cash_trace/android/app/.cxx/RelWithDebInfo/16643s4h/x86_64/CMakeFiles/rebuild_cache.dir
