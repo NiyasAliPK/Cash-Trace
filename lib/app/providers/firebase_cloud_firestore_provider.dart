@@ -1,6 +1,7 @@
 // lib/app/providers/transaction_provider.dart
 import 'package:cash_trace/app/contants/common_enums.dart';
 import 'package:cash_trace/app/models/common/transaction_model.dart';
+import 'package:cash_trace/app/providers/search_query_provider.dart';
 import 'package:cash_trace/app/repo/cloud_firestore_repository.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -22,8 +23,9 @@ Future<TransactionModel> singleTransaction(Ref ref, String id) async {
 // Provider to get all transactions as a stream
 @Riverpod(keepAlive: true)
 Stream<List<TransactionModel>> transactions(Ref ref) {
+  final searchQuery = ref.watch(searchQueryProvider);
   final repository = ref.watch(transactionRepositoryProvider);
-  return repository.getAllTransactions();
+  return repository.getAllTransactions(searchQuery: searchQuery);
 }
 
 // Provider to get transactions by type (income/expense)
@@ -90,10 +92,11 @@ class TransactionNotifier extends _$TransactionNotifier {
       final id = await repository.addTransaction(transaction);
 
       // Invalidate the transactions providers to refresh the UI
-      ref.invalidate(transactionsProvider);
+      // ref.invalidate(transactionsProvider);
       ref.invalidate(transactionsWithFilterProvider);
       ref.invalidate(totalIncomeProvider);
       ref.invalidate(totalExpensesProvider);
+      ref.invalidate(searchQueryProvider);
       state = TransactionStates.success;
 
       return id;
@@ -113,10 +116,11 @@ class TransactionNotifier extends _$TransactionNotifier {
       await repository.updateTransaction(transaction);
 
       // Invalidate providers
-      ref.invalidate(transactionsProvider);
+      // ref.invalidate(transactionsProvider);
       ref.invalidate(transactionsWithFilterProvider);
       ref.invalidate(totalIncomeProvider);
       ref.invalidate(totalExpensesProvider);
+      // ref.invalidate(searchQueryProvider); // no need to reset when upating because the user might be updating multiple with the same name
       state = TransactionStates.success;
     } catch (e) {
       state = TransactionStates.error;
@@ -134,10 +138,11 @@ class TransactionNotifier extends _$TransactionNotifier {
       await repository.deleteTransaction(id);
 
       // Invalidate providers
-      ref.invalidate(transactionsProvider);
+      // ref.invalidate(transactionsProvider);
       ref.invalidate(transactionsWithFilterProvider);
       ref.invalidate(totalIncomeProvider);
       ref.invalidate(totalExpensesProvider);
+      ref.invalidate(searchQueryProvider);
       state = TransactionStates.success;
     } catch (e) {
       state = TransactionStates.error;

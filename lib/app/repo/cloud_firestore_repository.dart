@@ -21,22 +21,34 @@ class TransactionRepository {
   String? get currentUserId => _auth.currentUser?.uid;
 
   // Get all transactions for the current user
-  Stream<List<TransactionModel>> getAllTransactions() {
-    return _transactionsCollection
-        .orderBy('transaction_date', descending: true)
-        .snapshots()
-        .map((snapshot) {
-      return snapshot.docs.map((doc) {
-        final data = doc.data();
-        // Convert Timestamp to DateTime
-        final timestamp = data['transaction_date'] as Timestamp;
-        data['transaction_date'] = timestamp.toDate();
+Stream<List<TransactionModel>> getAllTransactions({String searchQuery = ''}) {
+  var query = _transactionsCollection.orderBy('transaction_date', descending: true);
+  
+  // We don't modify the query since we'll filter in memory
+  // Firestore doesn't support case-insensitive contains() queries directly
+  
+  return query.snapshots().map((snapshot) {
+    var transactions = snapshot.docs.map((doc) {
+      final data = doc.data();
+      // Convert Timestamp to DateTime
+      final timestamp = data['transaction_date'] as Timestamp;
+      data['transaction_date'] = timestamp.toDate();
 
-        // Create TransactionModel with ID from doc
-        return TransactionModel.fromJson({...data, 'id': doc.id});
+      // Create TransactionModel with ID from doc
+      return TransactionModel.fromJson({...data, 'id': doc.id});
+    }).toList();
+    
+    // Apply in-memory filtering if there's a search query
+    if (searchQuery.isNotEmpty) {
+      transactions = transactions.where((transaction) {
+        final description = transaction.transactionDescription.toLowerCase() ;
+        return description.contains(searchQuery.toLowerCase());
       }).toList();
-    });
-  }
+    }
+    
+    return transactions;
+  });
+}
 
   // Add a new transaction
   Future<String> addTransaction(TransactionModel transaction) async {

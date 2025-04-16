@@ -179,7 +179,7 @@ class _SingleTransactionProviderElement
   String get id => (origin as SingleTransactionProvider).id;
 }
 
-String _$transactionsHash() => r'42504cfe3fbc12feae9b142965a225fd2a90b9fc';
+String _$transactionsHash() => r'f42426207beb368b561a393cc3f9cdc75d725134';
 
 /// See also [transactions].
 @ProviderFor(transactions)
@@ -706,7 +706,7 @@ final totalExpensesProvider = FutureProvider<double>.internal(
 // ignore: unused_element
 typedef TotalExpensesRef = FutureProviderRef<double>;
 String _$transactionNotifierHash() =>
-    r'cc669f96fef62bae0d3d1cdf1425f9ce9379eb45';
+    r'cc3ee16159d0dd6867877928df2407a0d8f55fd4';
 
 /// See also [TransactionNotifier].
 @ProviderFor(TransactionNotifier)
