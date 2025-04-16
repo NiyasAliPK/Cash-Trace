@@ -5,15 +5,13 @@ import 'package:cash_trace/app/screens/home/widgets/list_tile_widget.dart';
 import 'package:cash_trace/app/screens/home/widgets/search_field_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:go_router/go_router.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context, ref) {
-    return Scaffold(
-      body: Padding(
+    return Padding(
         padding: EdgeInsets.all(SizeConstant.getHeightWithScreen(12)),
         child: Column(
           children: [
@@ -52,19 +50,6 @@ class HomeScreen extends ConsumerWidget {
               ),
             ),
           ],
-        ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: FloatingActionButton(
-        shape: RoundedRectangleBorder(
-          borderRadius:
-              BorderRadius.circular(SizeConstant.getHeightWithScreen(50)),
-        ),
-        onPressed: () {
-          context.pushNamed('add');
-        },
-        child: Icon(Icons.add),
-      ),
-    );
+        ));
   }
 }
